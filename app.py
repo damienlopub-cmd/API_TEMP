@@ -3,13 +3,17 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-@app.route('/geocodage', methods=['GET'])
-def geocodage():
+@app.route('/search', methods=['GET'])
+def search():
     query = request.args.get('q', '')
-    limit = request.args.get('limit', '1')
+    if not query:
+        return jsonify({
+            "error": "Missing required parameter 'q'"
+        }), 404
 
     response = {
         "type": "FeatureCollection",
+        "version": "1.0",
         "features": [
             {
                 "type": "Feature",
@@ -31,9 +35,7 @@ def geocodage():
             }
         ],
         "attribution": "Mock API",
-        "version": "1.0",
-        "query": query,
-        "limit": limit
+        "query": query
     }
 
     return jsonify(response)
