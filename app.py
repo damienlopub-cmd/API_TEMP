@@ -40,5 +40,9 @@ def geocodage_search():
 
     return jsonify(response)
 
+@app.errorhandler(404)
+def not_found(error):
+    return jsonify({"message": "no Route matched with those values"}), 404
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=10000)
