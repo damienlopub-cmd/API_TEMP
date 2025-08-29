@@ -1,5 +1,8 @@
 
 from flask import Flask, request, jsonify
+import threading
+import time
+import requests
 
 app = Flask(__name__)
 
@@ -44,5 +47,14 @@ def geocodage_search():
 def not_found(error):
     return jsonify({"message": "no Route matched with those values"}), 404
 
+def keep_alive():
+    while True:
+        try:
+            requests.get("https://api-temp-eq05.onrender.com/geocodage/search?q=keepalive")
+        except Exception as e:
+            print(f"Keep-alive failed: {e}")
+        time.sleep(600)  # 10 minutes
+
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=10000)
+    threading.Thread(target=keep_alive, daemon=True).start()
+    app.run(host='0.0.0.0', port=10000
