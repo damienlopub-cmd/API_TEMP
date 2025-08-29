@@ -3,8 +3,8 @@ from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-@app.route('/search', methods=['GET'])
-def search():
+@app.route('/geocodage/search', methods=['GET'])
+def geocodage_search():
     query = request.args.get('q', '')
     if not query:
         return jsonify({
